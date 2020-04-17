@@ -235,7 +235,8 @@ static const struct tegra_pingroup_config i2c2_gen2 = {
 static struct tegra_i2c_platform_data tf101_i2c2_platform_data = {
 	.adapter_nr	= 1,
 	.bus_count	= 2,
-	.bus_clk_rate	= { 93750, 100000 },
+	/*.bus_clk_rate	= { 93750, 100000 },*/ /* Original in jmrohwer */
+	.bus_clk_rate	= { 10000, 10000 },  /* From timduru 3.10 (ventana) */
 	.bus_mux	= { &i2c2_ddc, &i2c2_gen2 },
 	.bus_mux_len	= { 1, 1 },
 	.slave_addr = 0x00FC,
@@ -264,6 +265,7 @@ static struct tegra_i2c_platform_data tf101_dvc_platform_data = {
 	.arb_recovery	= arb_lost_recovery,
 };
 
+/* TODO: This struct is different in timduru 3.10 kernel */
 static struct wm8903_platform_data tf101_wm8903_pdata = {
 	.irq_active_low = 0,
 	.micdet_cfg = 0x83,
@@ -281,7 +283,7 @@ static struct wm8903_platform_data tf101_wm8903_pdata = {
 static struct i2c_board_info __initdata wm8903_board_info = {
 	I2C_BOARD_INFO("wm8903", 0x1a),
 	.platform_data = &tf101_wm8903_pdata,
-	//.irq = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_CDC_IRQ),
+	//.irq = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_CDC_IRQ), /*TODO: Enabled in timduru */
 };
 
 static void tf101_i2c_init(void)
