@@ -83,8 +83,10 @@ int arb_lost_recovery(int scl_gpio, int sda_gpio)
 	gpio_free(sda_gpio);
 
 	if (likely(recovered_successfully)) {
+#if 0
 		pr_err("arbitration lost recovered by re-try-count 0x%08x\n",
 			RETRY_MAX_COUNT - retry);
+#endif
 		return 0;
 	} else {
 		pr_err("Un-recovered arbitration lost.\n");

@@ -545,21 +545,27 @@ static irqreturn_t tegra_i2c_isr(int irq, void *dev_id)
 	}
 
 	if (unlikely(status & status_err)) {
+#if 0
 		dev_warn(i2c_dev->dev, "I2c error status 0x%08x\n", status);
+#endif
 		if (status & I2C_INT_NO_ACK) {
 			i2c_dev->msg_err |= I2C_ERR_NO_ACK;
+#if 0
 			dev_warn(i2c_dev->dev, "no acknowledge from address"
 					" 0x%x\n", i2c_dev->msg_add);
 			dev_warn(i2c_dev->dev, "Packet status 0x%08x\n",
 				i2c_readl(i2c_dev, I2C_PACKET_TRANSFER_STATUS));
+#endif
 		}
 
 		if (status & I2C_INT_ARBITRATION_LOST) {
 			i2c_dev->msg_err |= I2C_ERR_ARBITRATION_LOST;
+#if 0
 			dev_warn(i2c_dev->dev, "arbitration lost during "
 				" communicate to add 0x%x\n", i2c_dev->msg_add);
 			dev_warn(i2c_dev->dev, "Packet status 0x%08x\n",
 				i2c_readl(i2c_dev, I2C_PACKET_TRANSFER_STATUS));
+#endif
 		}
 
 		if (status & I2C_INT_TX_FIFO_OVERFLOW) {
