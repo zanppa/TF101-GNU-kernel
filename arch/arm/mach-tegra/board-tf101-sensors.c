@@ -357,31 +357,32 @@ struct nvhost_device tegra_camera_device = {
 	.moduleid      = NVHOST_MODULE_VI,
 };
 
+
 #ifdef CONFIG_MPU_SENSORS_MPU3050
 static struct mpu_platform_data mpu_pdata = {
 	.int_config  = 0x10,
 	.orientation = { 0, 1, 0, -1, 0, 0, 0, 0, 1 },  /* Orientation matrix for MPU on tf101 */
 	.level_shifter = 0,
+};
 
 #ifdef CONFIG_MPU_SENSORS_KXTF9
-	.accel = {
-		.address     = MPU_ACCEL_ADDR,
-		.irq         = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_PN4),
-		.adapt_num   = 0,
-		.bus         = EXT_SLAVE_BUS_SECONDARY,
-		.orientation = { 1, 0, 0, 0, 1, 0, 0, 0, 1 },
-	},
-#endif
-#ifdef CONFIG_MPU_SENSORS_AMI306
-	.compass = {
-		.address     = MPU_COMPASS_ADDR,
-		.irq         = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_PN5),
-		.adapt_num   = 0,
-		.bus         = EXT_SLAVE_BUS_PRIMARY,
-		.orientation = { -1, 0, 0, 0, 1, 0, 0, 0, -1 },
-        },
-#endif
+static struct ext_slave_platform_data mpu_accel_data = {
+        .address        = MPU_ACCEL_ADDR,
+        .irq            = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_PN4),
+        .adapt_num      = 0,
+        .bus            = EXT_SLAVE_BUS_SECONDARY,
+        .orientation    = { 1, 0, 0, 0, 1, 0, 0, 0, 1 },
 };
+#endif
+#ifdef CONFIG_MPU_SENSORS_AMI30X
+static struct ext_slave_platform_data mpu_compass_data = {
+        .address        = MPU_COMPASS_ADDR,
+        .irq            = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_PN5),
+        .adapt_num      = 0,
+        .bus            = EXT_SLAVE_BUS_PRIMARY,
+        .orientation    = { -1, 0, 0, 0, 1, 0, 0, 0, -1 },
+};
+#endif
 
 static struct i2c_board_info __initdata mpu3050_i2c0_boardinfo[] = {
 	{
@@ -393,14 +394,14 @@ static struct i2c_board_info __initdata mpu3050_i2c0_boardinfo[] = {
 	{
 		I2C_BOARD_INFO(MPU_ACCEL_NAME, MPU_ACCEL_ADDR),
 		.irq = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_PN4),
-		.platform_data = &mpu_pdata.accel,
+		.platform_data = &mpu_accel_data,
 	},
 #endif
-#ifdef CONFIG_MPU_SENSORS_AMI306
+#ifdef CONFIG_MPU_SENSORS_AMI30X
 	{
 		I2C_BOARD_INFO(MPU_COMPASS_NAME, MPU_COMPASS_ADDR),
 		.irq = TEGRA_GPIO_TO_IRQ(TEGRA_GPIO_PN5),
-		.platform_data = &mpu_pdata.compass,
+		.platform_data = &mpu_compass_data,
 	},
 #endif
 };

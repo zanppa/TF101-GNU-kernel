@@ -73,7 +73,7 @@ int tf101_charger_init(void);
 #define MPU_GYRO_NAME		"mpu3050"
 #define MPU_ACCEL_NAME		"kxtf9"
 #define MPU_ACCEL_ADDR		0x0f
-#define MPU_COMPASS_NAME	"ami306"
+#define MPU_COMPASS_NAME	"ami304"
 #define MPU_COMPASS_ADDR	0x0e
 
 #endif
